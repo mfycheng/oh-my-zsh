@@ -85,6 +85,9 @@ alias gds='git diff --staged'
 alias gdt='git diff-tree --no-commit-id --name-only -r'
 alias gdw='git diff --word-diff'
 
+gdv() { git diff -w "$@" | view - }
+compdef _git gdv=git-diff
+
 function gdv() { git diff -w "$@" | view - }
 compdef _git gdv=git-diff
 
@@ -92,23 +95,21 @@ alias gf='git fetch'
 alias gfa='git fetch --all --prune'
 alias gfo='git fetch origin'
 
+function gfg() { git ls-files | grep $@ }
+compdef _grep gfg
+
 alias gfg='git ls-files | grep'
 
 alias gg='git gui citool'
 alias gga='git gui citool --amend'
 
-function ggf() {
+ggf() {
   [[ "$#" != 1 ]] && local b="$(git_current_branch)"
   git push --force origin "${b:=$1}"
 }
 compdef _git ggf=git-checkout
-function ggfl() {
-  [[ "$#" != 1 ]] && local b="$(git_current_branch)"
-  git push --force-with-lease origin "${b:=$1}"
-}
-compdef _git ggfl=git-checkout
 
-function ggl() {
+ggl() {
   if [[ "$#" != 0 ]] && [[ "$#" != 1 ]]; then
     git pull origin "${*}"
   else
@@ -118,7 +119,7 @@ function ggl() {
 }
 compdef _git ggl=git-checkout
 
-function ggp() {
+ggp() {
   if [[ "$#" != 0 ]] && [[ "$#" != 1 ]]; then
     git push origin "${*}"
   else
@@ -128,7 +129,7 @@ function ggp() {
 }
 compdef _git ggp=git-checkout
 
-function ggpnp() {
+ggpnp() {
   if [[ "$#" == 0 ]]; then
     ggl && ggp
   else
@@ -137,7 +138,7 @@ function ggpnp() {
 }
 compdef _git ggpnp=git-checkout
 
-function ggu() {
+ggu() {
   [[ "$#" != 1 ]] && local b="$(git_current_branch)"
   git pull --rebase origin "${b:=$1}"
 }
@@ -151,6 +152,14 @@ alias ggsup='git branch --set-upstream-to=origin/$(git_current_branch)'
 alias gpsup='git push --set-upstream origin $(git_current_branch)'
 
 alias ghh='git help'
+
+alias ggpull='git pull origin $(git_current_branch)'
+compdef _git ggpull=git-checkout
+
+alias ggpush='git push origin $(git_current_branch)'
+compdef _git ggpush=git-checkout
+
+alias ggsup='git branch --set-upstream-to=origin/$(git_current_branch)'
 
 alias gignore='git update-index --assume-unchanged'
 alias gignored='git ls-files -v | grep "^[[:lower:]]"'
