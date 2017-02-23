@@ -258,7 +258,7 @@ if [[ ! -z "$playlist" ]]; then
 					opt="play"
 				else
 					opt="stop"
-				fi
+				fi	
                   else
                     opt="set allPlaylists to (get name of every playlist)"
                   fi
